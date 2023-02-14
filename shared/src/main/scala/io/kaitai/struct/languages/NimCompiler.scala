@@ -548,6 +548,7 @@ object NimCompiler extends LanguageCompilerStatic
       case IntMultiType(true, Width4, _) => "int32"
       case IntMultiType(true, Width8, _) => "int64"
 
+      case FloatMultiType(Width2, _) => "float32"
       case FloatMultiType(Width4, _) => "float32"
       case FloatMultiType(Width8, _) => "float64"
 

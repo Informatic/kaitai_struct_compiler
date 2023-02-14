@@ -310,7 +310,7 @@ object DataType {
   }
 
   private val ReIntType = """([us])(2|4|8)(le|be)?""".r
-  private val ReFloatType = """f(4|8)(le|be)?""".r
+  private val ReFloatType = """f(2|4|8)(le|be)?""".r
   private val ReBitType = """b(\d+)(le|be)?""".r
 
   def fromYaml(
@@ -344,6 +344,7 @@ object DataType {
         case ReFloatType(widthStr, endianStr) =>
           FloatMultiType(
             widthStr match {
+              case "2" => Width2
               case "4" => Width4
               case "8" => Width8
             },
@@ -415,7 +416,7 @@ object DataType {
   }
 
   private val RePureIntType = """([us])(2|4|8)""".r
-  private val RePureFloatType = """f(4|8)""".r
+  private val RePureFloatType = """f(2|4|8)""".r
 
   def pureFromString(dto: Option[String], enumRef: Option[String], path: List[String]): DataType =
     applyEnumType(pureFromString(dto), enumRef, path)
@@ -448,6 +449,7 @@ object DataType {
       case RePureFloatType(widthStr) =>
         FloatMultiType(
           widthStr match {
+            case "2" => Width2
             case "4" => Width4
             case "8" => Width8
           },

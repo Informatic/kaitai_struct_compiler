@@ -1077,6 +1077,7 @@ object CppCompiler extends LanguageCompilerStatic
       case IntMultiType(true, Width4, _) => "int32_t"
       case IntMultiType(true, Width8, _) => "int64_t"
 
+      case FloatMultiType(Width2, _) => "float"
       case FloatMultiType(Width4, _) => "float"
       case FloatMultiType(Width8, _) => "double"
 

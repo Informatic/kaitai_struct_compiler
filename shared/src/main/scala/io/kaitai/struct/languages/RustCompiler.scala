@@ -512,6 +512,7 @@ class RustCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
       case IntMultiType(true, Width4, _) => "i32"
       case IntMultiType(true, Width8, _) => "i64"
 
+      case FloatMultiType(Width2, _) => "f32"
       case FloatMultiType(Width4, _) => "f32"
       case FloatMultiType(Width8, _) => "f64"
 
