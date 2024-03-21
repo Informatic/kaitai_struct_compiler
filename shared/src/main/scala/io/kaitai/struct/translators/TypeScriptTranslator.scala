@@ -108,7 +108,7 @@ class TypeScriptTranslator(provider: TypeProvider) extends BaseTranslator(provid
     s"(${translate(i)}).toString(${translate(base)})"
 
   override def bytesToStr(bytesExpr: String, encoding: Ast.expr): String =
-    s"${TypeScriptCompiler.kstreamName}.bytesToStr($bytesExpr, ${translate(encoding)})"
+    s"${TypeScriptCompiler.kstreamName}.bytesToStr($bytesExpr, (${translate(encoding)}).toLowerCase() as BufferEncoding)"
 
   override def strLength(s: expr): String =
     s"${translate(s)}.length"

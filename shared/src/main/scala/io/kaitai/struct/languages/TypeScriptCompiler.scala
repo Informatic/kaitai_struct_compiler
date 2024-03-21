@@ -169,7 +169,7 @@ class TypeScriptCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
   override def attributeReader(attrName: Identifier, attrType: DataType, isNullable: Boolean): Unit = {
     val name = publicMemberName(attrName)
     if (name == Identifier.ROOT || name == Identifier.PARENT) return
-    out.puts(s"$name: ${kaitaiType2NativeType(attrType, isNullable)};")
+    out.puts(s"$name!: ${kaitaiType2NativeType(attrType, isNullable)};")
   }
 
   override def universalDoc(doc: DocSpec): Unit = {
@@ -419,11 +419,11 @@ class TypeScriptCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
         s"$io.readBitsInt${Utils.upperCamelCase(bitEndian.toSuffix)}($width)"
       case t: UserType =>
         val parent = t.forcedParent match {
-          case Some(USER_TYPE_NO_PARENT) => "null"
+          case Some(USER_TYPE_NO_PARENT) => "undefined"
           case Some(fp) => translator.translate(fp)
           case None => "this"
         }
-        val root = if (t.isOpaque) "null" else "this._root"
+        val root = if (t.isOpaque) "undefined" else "this._root"
         val addEndian = t.classSpec.get.meta.endian match {
           case Some(InheritedEndian) => ", this._is_le"
           case _ => ""
@@ -534,7 +534,7 @@ class TypeScriptCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
   //</editor-fold>
 
   override def instanceDeclaration(attrName: InstanceIdentifier, attrType: DataType, isNullable: Boolean): Unit = {
-    out.puts(s"private ${privateMemberName(attrName)}: ${kaitaiType2NativeType(attrType, isNullable)};")
+    out.puts(s"private ${privateMemberName(attrName)}?: ${kaitaiType2NativeType(attrType, isNullable)};")
   }
 
   override def instanceHeader(className: List[String], instName: InstanceIdentifier, dataType: DataType, isNullable: Boolean): Unit = {
@@ -556,7 +556,7 @@ class TypeScriptCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
   }
 
   override def instanceReturn(instName: InstanceIdentifier, attrType: DataType): Unit = {
-    out.puts(s"return this.${privateMemberName(instName)};")
+    out.puts(s"return this.${privateMemberName(instName)} as ${kaitaiType2NativeType(attrType, isNullable = false)};")
   }
 
   override def enumDeclaration(curClass: List[String], enumName: String, enumColl: Seq[(Long, EnumValueSpec)]): Unit = {
