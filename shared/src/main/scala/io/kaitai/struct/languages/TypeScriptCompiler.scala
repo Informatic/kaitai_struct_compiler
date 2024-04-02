@@ -52,7 +52,7 @@ class TypeScriptCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
     outHeader.puts(s" * $headerComment")
     outHeader.puts(" */")
 
-    outHeader.puts("import KaitaiStream from 'kaitai-struct/KaitaiStream'")
+    outHeader.puts("import {KaitaiStream} from 'kaitai-struct'")
   }
 
   override def opaqueClassDeclaration(classSpec: ClassSpec): Unit = {
